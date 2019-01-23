@@ -60,16 +60,17 @@ module.exports = {
 ```
 
 {% capture __alert_content -%}
-In case you use [SourceMapDevToolPlugin](https://webpack.js.org/plugins/source-map-dev-tool-plugin) for more fine grained control of source map generation, leave `noSources` turned off, so Sentry can display proper source code context in event stack traces.
+In case you use [SourceMapDevToolPlugin](https://webpack.js.org/plugins/source-map-dev-tool-plugin) for more fine-grained control of source map generation, leave `noSources` turned off, so Sentry can display proper source code context in event stack traces.
 {%- endcapture -%}
 {%- include components/alert.html
   title="Note"
   content=__alert_content
+  level="info"
 %}
 
 ### SystemJS
 
-SystemJS is the default module loader for Angular 2 projects. The [SystemJS build tool](https://github.com/systemjs/builder) can be used to bundle, transpile, and minify source code for use in production environments, and can be configured to output source maps.
+SystemJS is the default module loader for Angular 2 projects. The [SystemJS build tool](https://github.com/systemjs/builder) can be used to bundle, transpile, and minify source code for use in production environments. You can also configure the build tool to output source maps.
 
 ```javascript
 builder.bundle('src/app.js', 'dist/app.min.js', {
@@ -80,11 +81,12 @@ builder.bundle('src/app.js', 'dist/app.min.js', {
 ```
 
 {% capture __alert_content -%}
-All of the example configurations above inline your original, un-transformed source files into the generated source map file. Sentry requires both source map(s) **and** your original source files in order to perform reverse transformations. If you choose NOT to inline your source files, you must make those source files available to Sentry in _addition_ to your source maps (see below).
+All of the example configurations above inline your original, un-transformed source files into the generated source map file. Sentry requires both source map(s) **and** your original source files to perform reverse transformations. If you choose NOT to inline your source files, you must make those source files available to Sentry in _addition_ to your source maps (see below).
 {%- endcapture -%}
 {%- include components/alert.html
   title="Inline Sources"
   content=__alert_content
+  level="info"
 %}
 
 ### TypeScript
