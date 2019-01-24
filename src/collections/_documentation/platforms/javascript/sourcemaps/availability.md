@@ -18,7 +18,7 @@ By default, Sentry will look for source map directives in your compiled JavaScri
 
 When Sentry encounters such a directive, it will resolve the source map URL relative the source file in which it is found, and attempt an HTTP request to fetch it.
 
-So for example if you have a minified JavaScript file located at `http://example.org/js/app.min.js`. And in that file, on the last line, the following directive is found:
+So for example, if you have a minified JavaScript file located at `http://example.org/js/app.min.js`. And in that file, on the last line, the following directive is found:
 
 ```javascript
 //# sourceMappingURL=app.js.map
@@ -26,7 +26,7 @@ So for example if you have a minified JavaScript file located at `http://example
 
 Sentry will attempt to fetch `app.js.map` from [http://example.org/js/app.js.map](http://example.org/js/app.js.map).
 
-Alternatively, during source map generation you can specify a fully qualified URL where your source maps are located:
+Alternatively, during source map generation you can specify a fully qualified URL at your source maps' location:
 
 ```javascript
 //# sourceMappingURL=http://example.org/js/app.js.map
@@ -35,7 +35,7 @@ Alternatively, during source map generation you can specify a fully qualified UR
 While making source maps available to Sentry from your servers is the easiest integration, it is not always advisable:
 
 -   Sentry may not always be able to reach your servers.
--   If you do not specify versions in your asset URLs, there may be a version mismatch
+-   If you do not specify versions in your asset URLs, there may be a version mismatch.
 -   The additional latency may mean that source mappings are not available for all errors.
 
 For these reasons, it is recommended to upload source maps to Sentry beforehand (see below).
@@ -58,7 +58,7 @@ If you want to keep your source maps secret and choose not to upload your source
 
 Except for [webpack]({%- link _documentation/platforms/javascript/sourcemaps/generation.md -%}#webpack), the recommended way to upload source maps is using [Sentry CLI]({%- link _documentation/cli/index.md -%}). If you have used [_Sentry Wizard_](https://github.com/getsentry/sentry-wizard) to set up your project, it has already created all necessary configuration to upload source maps. Otherwise, follow the [CLI configuration docs]({%- link _documentation/cli/configuration.md -%}) to set up your project.
 
-Now you need to set up your build system to create a release, and attach the various source files. For Sentry to de-minify your stack traces you must provide both the minified files (e.g. app.min.js) and the corresponding source maps. In case the source map files do not contain your original source code (`sourcesContent`), you must additionally provide the original source files. (Alternatively, sentry-cli will automatically embed the sources (if missing) into your source maps if you pass the `--rewrite` flag.)
+Now you need to set up your build system to create a release and attach the various source files. For Sentry to de-minify your stack traces you must provide both the minified files (e.g. app.min.js) and the corresponding source maps. In case the source map files do not contain your original source code (`sourcesContent`), you must additionally provide the original source files. (Alternatively, sentry-cli will automatically embed the sources (if missing) into your source maps if you pass the `--rewrite` flag.)
 
 Sentry uses [**Releases**]({%- link _documentation/workflow/releases.md -%}) to match the correct source maps to your events. To create a new release, run the following command (e.g. during publishing):
 
@@ -66,7 +66,14 @@ Sentry uses [**Releases**]({%- link _documentation/workflow/releases.md -%}) to 
 $ sentry-cli releases new <release_name>
 ```
 
-Note the release name must be **unique within your organization** and match the `release` option in your SDK initialization code. Then, use the `upload-sourcemaps` command to scan a folder for source maps, process them and upload them to Sentry:
+{% capture __alert_content -%}
+The release name must be **unique within your organization** and match the `release` option in your SDK initialization code. Then, use the `upload-sourcemaps` command to scan a folder for source maps, process them and upload them to Sentry.
+{%- endcapture -%}
+{%- include components/alert.html
+  title="Note"
+  content=__alert_content
+  level="warning"
+%}
 
 ```sh
 $ sentry-cli releases files <release_name> upload-sourcemaps /path/to/files
@@ -86,7 +93,7 @@ Unfortunately, it can be quite challenging to ensure that source maps are actual
   content=__alert_content
 %}
 
-Until now, the release is in a draft state (“_unreleased_”). Once all source maps have been uploaded and your app has been published successfully, finalize the release with the following command:
+Until now, the release is in a draft state (“_unreleased_”). Once all source maps have been uploaded, and your app has been published successfully, finalize the release with the following command:
 
 ```sh
 $ sentry-cli releases finalize <release_name>
@@ -94,7 +101,14 @@ $ sentry-cli releases finalize <release_name>
 
 For convenience, you can alternatively pass the `--finalize` flag to the `new` command which will immediately finalize the release.
 
-Note: You dont _have_ to upload the source files (ref’d by source maps), but without them the grouping algorithm will not be as strong, and the UI will not show any contextual source.
+{% capture __alert_content -%}
+You don't _have_ to upload the source files (referenced by source maps), but without them, the grouping algorithm will not be as strong, and the UI will not show any contextual source.
+{%- endcapture -%}
+{%- include components/alert.html
+  title="Note"
+  content=__alert_content
+  level="info"
+%}
 
 Additional information can be found in the [Releases API documentation]({%- link _documentation/api/releases/index.md -%}).
 
@@ -124,7 +138,7 @@ The ~ prefix tells Sentry that for a given URL, **any** combination of protocol 
 %}
 
 {% capture __alert_content -%}
-Unfortunately it can be quite challenging to ensure that source maps are actually valid themselves and uploaded correctly. To ensure that everything is working as intended you can use the _–validate_ flag when uploading source maps which will attempt to locally parse the source map and look up the references. Note that there are known cases where the validate flag will indicate failures when the setup is correct (if you have references to external source maps then the validation tool will indicate a failure).
+Unfortunately, it can be quite challenging to ensure that source maps are actually valid themselves and uploaded correctly. To ensure that everything is working as intended you can use the _–validate_ flag when uploading source maps which will attempt to locally parse the source map and look up the references. Note that there are known cases where the validate flag will indicate failures when the setup is correct (if you have references to external source maps then the validation tool will indicate a failure).
 
 Here are some things you can check in addition to the validation step:
 
