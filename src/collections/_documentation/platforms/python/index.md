@@ -3,6 +3,20 @@ title: Python
 sidebar_order: 3
 ---
 
+&nbsp;
+## Integrating the SDK
+All our JavaScript-related SDKs provide the same API. Still, there are some differences between them, such as installation, which this section of the docs explains.
+
+{% include components/platform_content.html content_dir='getting-started-install' %}
+
+
+
+
+
+
+*******************************
+*******************************
+
 {% include learn-sdk.md platform="python" %}
 
 The [Sentry Python SDK](https://pypi.org/project/sentry-sdk) provides support
