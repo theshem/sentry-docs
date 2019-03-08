@@ -5,11 +5,14 @@ sidebar_order: 3
 
 &nbsp;
 ## Integrating the SDK
-All our JavaScript-related SDKs provide the same API. Still, there are some differences between them, such as installation, which this section of the docs explains.
+The [Sentry Python SDK](https://pypi.org/project/sentry-sdk) provides support
+for Python 2.7 and 3.4 or later.
 
-{% include components/platform_content.html content_dir='getting-started-install' %}
+Install our Python SDK using [`pip`](https://pip.pypa.io/en/stable/):
 
-
+```bash
+$ pip install --upgrade sentry-sdk=={% sdk_version sentry.python %}
+```
 
 
 
