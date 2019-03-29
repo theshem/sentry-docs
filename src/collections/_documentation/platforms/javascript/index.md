@@ -781,10 +781,6 @@ to `integrations` option. For example, to turn off browser capturing console cal
 
 &nbsp;
 #### Default Integrations
-##### Dedupe
-_Import name: `Sentry.Integrations.Dedupe`_
-
-This integration deduplicates certain events. The Sentry SDK enables this by default, and it should not be disabled except in rare circumstances. Disabling this integration, for instance, will cause duplicate error logging.
 
 &nbsp;
 ##### InboundFilters
@@ -800,12 +796,6 @@ To configure it, use `ignoreErrors`, `blacklistUrls`, and `whitelistUrls` SDK op
 _Import name: `Sentry.Integrations.FunctionToString`_
 
 This integration allows the SDK to provide original functions and method names, even when our error or breadcrumbs handlers wrap them.
-
-&nbsp;
-##### ExtraErrorData
-_Import name: `Sentry.Integrations.ExtraErrorData`_
-
-This integration extracts all non-native attributes from the Error object and attaches them to the event as the `extra` data.
 
 &nbsp;
 #### Browser specific
@@ -875,6 +865,18 @@ This integration attaches user-agent information to the event, which allows us t
 &nbsp;
 ### Pluggable Integrations
 Pluggable integrations are integrations that can be additionally enabled, to provide some very specific features. Sentry documents them so you can see what they do and that they can be enabled. To enable pluggable integrations, provide a new instance with your config to `integrations` option. For example: `integrations: [new Sentry.Integrations.ReportingObserver()]`.
+
+&nbsp;
+##### Dedupe
+_Import name: `Sentry.Integrations.Dedupe`_
+
+This integration deduplicates certain events. The Sentry SDK enables this by default, and it should not be disabled except in rare circumstances. Disabling this integration, for instance, will cause duplicate error logging.
+
+&nbsp;
+##### ExtraErrorData
+_Import name: `Sentry.Integrations.ExtraErrorData`_
+
+This integration extracts all non-native attributes from the Error object and attaches them to the event as the `extra` data.
 
 &nbsp;
 #### Debug
@@ -964,6 +966,49 @@ Sentry.init({
     return [...integrations, new MyCustomIntegration()];
   }
 });
+```
+
+### Using pluggable integrations from `@sentry/integrations`
+
+You need to make sure that you install `@sentry/integrations` with `npm` or `yarn` then you can use all integrations that are included in the package like:
+
+```javascript
+import * as Sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
+
+Sentry.init({
+  dsn: '___PUBLIC_DSN___',
+  integrations: [
+    new Integrations.Vue({
+      Vue,
+      attachProps: true,
+    }),
+  ],
+});
+```
+
+In case you are using the CDN version or the Loader, we provide a standalone file for every integration, you can use it
+like this:
+
+```html
+<!-- Note that we now also provide a es6 build only -->
+<!-- <script src="https://browser.sentry-cdn.com/{% sdk_version sentry.javascript.browser %}/bundle.es6.min.js" crossorigin="anonymous"></script> -->
+<script src="https://browser.sentry-cdn.com/{% sdk_version sentry.javascript.browser %}/bundle.min.js" crossorigin="anonymous"></script>
+
+<!-- If you include the integration it will be available under Sentry.Integrations.Vue -->
+<script src="https://browser.sentry-cdn.com/{% sdk_version sentry.javascript.browser %}/vue.min.js" crossorigin="anonymous"></script>
+
+<script>
+  Sentry.init({
+    dsn: '___PUBLIC_DSN___',
+    integrations: [
+      new Sentry.Integrations.Vue({
+        Vue,
+        attachProps: true,
+      }),
+    ],
+  });
+</script>
 ```
 
 &nbsp;
