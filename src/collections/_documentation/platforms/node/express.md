@@ -10,6 +10,9 @@ Our Express integration only requires the installation of _@sentry/node_, and th
 ```javascript
 const express = require('express');
 const app = express();
+
+// For ECMAScript module syntax:
+// import * as Sentry from '@sentry/node'
 const Sentry = require('@sentry/node');
 
 Sentry.init({ dsn: '___PUBLIC_DSN___' });
@@ -40,9 +43,9 @@ They are fully compatible, so the only things you need to change are:
 
 ```javascript
 // from
-const express = require('express');
+const Sentry = require('@sentry/node');
 // to
-import * as express from 'express';
+import * as Sentry from '@sentry/node';
 
 
 // from
